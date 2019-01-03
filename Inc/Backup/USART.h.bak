@@ -155,9 +155,9 @@ struct USARTRegs{
 
 // STOP bits
 #define USART_STOP_BIT_1				(0ULL << 28)	// 1 Stop bits
-#define USART_STOP_BIT_0point5				(1ULL << 28)    // 0.5 Stop bits
+#define USART_STOP_BIT_0.5				(1ULL << 28)    // 0.5 Stop bits
 #define USART_STOP_BIT_2				(2ULL << 28)	// 2 Stop bits
-#define USART_STOP_BIT_1point5				(3ULL << 28)	// 1.5 Stop bits
+#define USART_STOP_BIT_1.5				(3ULL << 28)	// 1.5 Stop bits
 
 // LIN mode enable
 #define USART_LIN_DISABLE				(0ULL << 30)	// Lin mode disabled
@@ -190,11 +190,11 @@ struct USARTRegs{
 
 // DMA enable receiver
 #define USART_DMAR_DISABLE				(0ULL << 38)	// DMA mode is disabled for reception
-#define USART_DMAR_ENABLE				(1ULL << 38)	// DMA mode is enabled for reception
+#define USART_DMAR_ENABLE				(1ULL << 38)// DMA mode is enabled for reception
 
 // DMA enable transmitter
 #define USART_DMAT_DISABLE				(0ULL << 39)	// DMA mode is disabled for transmission
-#define USART_DMAT_ENABLE				(1ULL << 39)	// DMA mode is enabled for transmission
+#define USART_DMAT_ENABLE				(1ULL << 39)// DMA mode is enabled for transmission
 
 #define USART_RTS_DISABLE				(0ULL << 40)	// RTS hardware flow control disabled
 #define USART_RTS_ENABLE				(1ULL << 40)	// RTS hardware flow control enabled
@@ -212,8 +212,6 @@ struct USARTRegs{
 
 #define usartIsStatus(usart, whichFlags)	(usart)->SR & whichFlags
 #define usartIsTxRegEmpty(usart)			usartIsStatus(usart, USART_TXE_TRANSFERRED)
-#define usartTransferComplete(usart)
-
 
 void usartConfigure(USARTRegs *usart, long long mode, int baudrate, int peripheralFreq);
 int usartOverSample16(USARTRegs *usart);

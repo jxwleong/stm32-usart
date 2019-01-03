@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdint.h>
 #include "USART.h"
 #include "common.h"
 
@@ -38,4 +37,3 @@ int usartOverSample16(USARTRegs *usart){
 		return TRUE;
 	}
 }
-

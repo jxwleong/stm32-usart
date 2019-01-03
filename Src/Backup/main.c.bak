@@ -41,9 +41,7 @@
 #include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-#include "RCC.h"
-#include "GPIO.h"
-#include "USART.h"
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -63,21 +61,6 @@ static void MX_GPIO_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-char wordsBuffer[] = {
-	'H',
-	'e',
-	'l',
-	'l',
-	'o',
-	' ',
-	'W',
-	'o',
-	'r',
-	'l',
-	'd',
-	'!',
-	'\n',
-};
 
 /* USER CODE END 0 */
 
@@ -89,7 +72,6 @@ char wordsBuffer[] = {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	int i;
 
   /* USER CODE END 1 */
 
@@ -119,16 +101,15 @@ int main(void)
   ENABLE_GPIOC_CLK_GATING();
   ENABLE_GPIOD_CLK_GATING();
   // UART5_TX
-  GPIOConfigurePin(GPIOC, GPIOPin12, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
+  GPIOConfigurePin(GPIOC, GPIOPin12, GPIO_ALT_FUNC|GPIO_MED_SPEED);
   GPIOConfigureAltFunc(GPIOC, GPIOPin12, AF8);
 
   // UART5_RX
-  GPIOConfigurePin(GPIOD, GPIOPin2, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
+  GPIOConfigurePin(GPIOD, GPIOPin2, GPIO_ALT_FUNC|GPIO_MED_SPEED);
   GPIOConfigureAltFunc(GPIOD, GPIOPin2, AF8);
-  usartConfigure(uart5, USART_OVERSAMPLING_16 | USART_WORD_LENGTH_9BITS |	\
-		  	  	  	  	USART_ENABLE | USART_STOP_BIT_1 | USART_PC_ENABLE | \
-						USART_PARITY_ODD \
-						| USART_TE_ENABLE ,115200, 45000000);
+  usartConfigure(uart5, USART_OVERSAMPLING_16 | USART_WORD_LENGTH_8BITS |	\
+		  	  	  	  	USART_ENABLE | USART_STOP_BIT_2 | USART_PC_DISABLE |\
+						USART_TE_ENABLE,210987, 45000000);
 
   /* USER CODE END 2 */
 
@@ -136,22 +117,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /*	Q6
 	  if(usartIsTxRegEmpty(uart5)){
-		  (uart5)->DR = 0x86;
-		*/
-		  //6A = 0110 1010
-		  // 10110 1010		odd parity, no of 1 is even so parity is 1
-	  	  HAL_Delay(1000);
-		  for(i = 0; i < 13; i++){
-			  HAL_Delay(1);
-			  if(usartIsTxRegEmpty(uart5)){
-				  (uart5)->DR = wordsBuffer[i];
-			  }
-
-		  }
-
-
+		  (uart5)->DR = 0x6a;
+	  }
 
   /* USER CODE END WHILE */
 
