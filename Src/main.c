@@ -89,7 +89,7 @@ char wordsBuffer[] = {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	int i;
+	static int i = 0;
 
   /* USER CODE END 1 */
 
@@ -142,14 +142,18 @@ int main(void)
 		*/
 		  //6A = 0110 1010
 		  // 10110 1010		odd parity, no of 1 is even so parity is 1
-	  	  HAL_Delay(1000);
-		  for(i = 0; i < 13; i++){
-			  HAL_Delay(1);
+
+
 			  if(usartIsTxRegEmpty(uart5)){
 				  (uart5)->DR = wordsBuffer[i];
+				  i++;
+				  if(wordsBuffer[i-1] == '\n'){
+				 					  i = 0;
+				 				  }
 			  }
 
-		  }
+		  //Transmit data
+	  /*Read data*/
 
 
 
