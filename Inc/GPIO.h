@@ -33,6 +33,11 @@ typedef enum{
 }	GpioPullType;
 
 typedef enum{
+	PIN_RESET = 0,
+	PIN_SET,
+}GpioPinState;
+
+typedef enum{
 	GPIOPin0  = 0x0001,
 	GPIOPin1  = 0x0002,
 	GPIOPin2  = 0x0004,
@@ -67,17 +72,17 @@ struct GPIORegs {
 	IORegister altFuncHi;
 };
 
-#define GPIOA	((GPIORegs *)0x40020000)
-#define GPIOB	((GPIORegs *)0x40020400)
-#define GPIOC	((GPIORegs *)0x40020800)
-#define GPIOD	((GPIORegs *)0x40020c00)
-#define GPIOE	((GPIORegs *)0x40021000)
-#define GPIOF	((GPIORegs *)0x40021400)
-#define GPIOG	((GPIORegs *)0x40021800)
-#define GPIOH	((GPIORegs *)0x40021c00)
-#define GPIOI	((GPIORegs *)0x40022000)
-#define GPIOJ	((GPIORegs *)0x40022400)
-#define GPIOK	((GPIORegs *)0x40022800)
+#define gpioA	((GPIORegs *)0x40020000)
+#define gpioB	((GPIORegs *)0x40020400)
+#define gpioC	((GPIORegs *)0x40020800)
+#define gpioD	((GPIORegs *)0x40020c00)
+#define gpioE	((GPIORegs *)0x40021000)
+#define gpioF	((GPIORegs *)0x40021400)
+#define gpioG	((GPIORegs *)0x40021800)
+#define gpioH	((GPIORegs *)0x40021c00)
+#define gpioI	((GPIORegs *)0x40022000)
+#define gpioJ	((GPIORegs *)0x40022400)
+#define gpioK	((GPIORegs *)0x40022800)
 
 
 /*AF pins*/
@@ -109,4 +114,5 @@ typedef enum{
 
 void GPIOConfigurePin(GPIORegs *port, GPIOPin pins, int configuration);
 void GPIOConfigureAltFunc(GPIORegs *port, GPIOPin pin, int altFunc);
+void GPIOwritePins(GPIORegs *port, GPIOPin pins, GpioPinState pinState);
 #endif // __GPIO_H__

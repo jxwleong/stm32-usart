@@ -212,8 +212,8 @@ struct USARTRegs{
 
 #define usartIsStatus(usart, whichFlags)	(usart)->SR & whichFlags
 #define usartIsTxRegEmpty(usart)			usartIsStatus(usart, USART_TXE_TRANSFERRED)
-#define usartTransferComplete(usart)
-
+#define usartTransferComplete(usart)		usartIsStatus(usart, USART_TC_COMPLETE)
+#define usartIsRxRegNotEmpty(usart)			usartIsStatus(usart, USART_RXNE_READY)
 
 void usartConfigure(USARTRegs *usart, long long mode, int baudrate, int peripheralFreq);
 int usartOverSample16(USARTRegs *usart);

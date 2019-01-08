@@ -57,7 +57,10 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-
+#define LED3_Pin GPIO_PIN_13
+#define LED3_GPIO_Port GPIOG
+#define LED4_Pin GPIO_PIN_14
+#define LED4_GPIO_Port GPIOG
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

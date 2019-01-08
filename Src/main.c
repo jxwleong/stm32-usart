@@ -44,13 +44,14 @@
 #include "RCC.h"
 #include "GPIO.h"
 #include "USART.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+static int i = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,6 +80,28 @@ char wordsBuffer[] = {
 	'\n',
 };
 
+uint8_t commandBuffer[100];
+
+
+void UARTtransmitBuffer(int i){
+	  if(usartIsTxRegEmpty(uart5)){
+		  (uart5)->DR = wordsBuffer[i];
+		  i++;
+		  if(wordsBuffer[i-1] == '\n'){
+		 	i = 0;
+		 }
+	  }
+
+}
+
+void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
+	if(!(strcasecmp(commandStr, "turn on"))){
+		GPIOwritePins(port, pins, PIN_SET);
+	}
+	else if(!(strcasecmp(commandStr, "turn off"))){
+		GPIOwritePins(port, pins, PIN_RESET);
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -89,7 +112,7 @@ char wordsBuffer[] = {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	static int i = 0;
+
 
   /* USER CODE END 1 */
 
@@ -118,17 +141,20 @@ int main(void)
   ENABLE_UART5_CLK_GATING();
   ENABLE_GPIOC_CLK_GATING();
   ENABLE_GPIOD_CLK_GATING();
+  ENABLE_GPIOG_CLK_GATING();
+  //LED4
+  GPIOConfigurePin(gpioG, GPIOPin14, GPIO_OUTPUT|GPIO_PUSH_PULL |GPIO_HI_SPEED|GPIO_NO_PULL);
   // UART5_TX
-  GPIOConfigurePin(GPIOC, GPIOPin12, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
-  GPIOConfigureAltFunc(GPIOC, GPIOPin12, AF8);
+  GPIOConfigurePin(gpioC, GPIOPin12, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
+  GPIOConfigureAltFunc(gpioC, GPIOPin12, AF8);
 
   // UART5_RX
-  GPIOConfigurePin(GPIOD, GPIOPin2, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
-  GPIOConfigureAltFunc(GPIOD, GPIOPin2, AF8);
+  GPIOConfigurePin(gpioD, GPIOPin2, GPIO_ALT_FUNC|GPIO_VERY_HI_SPEED);
+  GPIOConfigureAltFunc(gpioD, GPIOPin2, AF8);
   usartConfigure(uart5, USART_OVERSAMPLING_16 | USART_WORD_LENGTH_9BITS |	\
 		  	  	  	  	USART_ENABLE | USART_STOP_BIT_1 | USART_PC_ENABLE | \
 						USART_PARITY_ODD \
-						| USART_TE_ENABLE ,115200, 45000000);
+						| USART_TE_ENABLE | USART_RE_ENABLE ,115200, 45000000);
 
   /* USER CODE END 2 */
 
@@ -136,25 +162,34 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /*	Q6
-	  if(usartIsTxRegEmpty(uart5)){
-		  (uart5)->DR = 0x86;
-		*/
-		  //6A = 0110 1010
-		  // 10110 1010		odd parity, no of 1 is even so parity is 1
 
 
-			  if(usartIsTxRegEmpty(uart5)){
-				  (uart5)->DR = wordsBuffer[i];
-				  i++;
-				  if(wordsBuffer[i-1] == '\n'){
-				 					  i = 0;
-				 				  }
-			  }
+	 // UARTtransmitBuffer(i);
 
-		  //Transmit data
 	  /*Read data*/
 
+restart:
+		  if(usartIsRxRegNotEmpty(uart5)){
+			  commandBuffer[i] = (uart5)->DR;
+			  if(usartIsTxRegEmpty(uart5)){
+
+				  		(uart5)->DR = commandBuffer[i];
+				  }
+			  if(commandBuffer[i] == '\b'){
+				  // check for backspace
+				  i--;
+				  goto restart;
+			  }
+			  if(commandBuffer[i] == '\n'){
+				  commandBuffer[i] = '\0';
+				  commandLineOperation(GPIOG, GPIOPin14, commandBuffer);
+				  i = 0;
+				  goto restart;
+			  }
+			  i++;
+
+	  }
+		  //i = 0;
 
 
   /* USER CODE END WHILE */
