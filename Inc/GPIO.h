@@ -115,4 +115,7 @@ typedef enum{
 void GPIOConfigurePin(GPIORegs *port, GPIOPin pins, int configuration);
 void GPIOConfigureAltFunc(GPIORegs *port, GPIOPin pin, int altFunc);
 void GPIOwritePins(GPIORegs *port, GPIOPin pins, GpioPinState pinState);
+
+
+
 #endif // __GPIO_H__

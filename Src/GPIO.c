@@ -62,6 +62,16 @@ void GPIOwritePins(GPIORegs *port, GPIOPin pins, GpioPinState pinState){
 			port-> outBits = pins << 16;
 		}
 }
+
+void GPIOTogglePin(GPIORegs *port, GPIOPin pins){
+	if(port->outData & pins){
+		GPIOwritePins(port, pins, PIN_RESET);
+	}
+	else{
+		GPIOwritePins(port, pins, PIN_SET);
+	}
+}
+
 /*return GPIO pins in terms of 0, 1, 2 ,3 .... instead of enum*/
 int GPIOPinVal(GPIOPin pin){
 	switch(pin){

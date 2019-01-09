@@ -117,6 +117,7 @@ struct TimerRegs{			//  Offset	// Description
 #define TIME_UPDATE_GEN						(tim)->egr |= TIM_EGR;
 
 #define TIM_INTERRUPT_ENABLE(tim, bit)		(tim)->dier |= bit;
+#define TIM_INTERRUPT_DISABLE(tim, bit)		(tim)->dier &= ~(bit);
 
 #define TIM_ENABLE_DMA(tim, bit)	\
 		do{								\
@@ -176,6 +177,11 @@ struct TIM_Handle_Type{
 #define timer14  ((TimerRegs*)0x40002000)
 
 
+#define TIMER_GET_STATUS(timer, whichFlags)				\
+					(timer)->sr & whichFlags
+
+#define TIMER_CLEAR_STATUS(timer, whichFlags)				\
+					(timer)->sr & ~(whichFlags)
 
 Status_TypeDef TIM_BASE_START(TIM_Handle_Type *tim);
 void Timer2init(TIM_Handle_Type *timer);

@@ -44,6 +44,8 @@
 #include "RCC.h"
 #include "GPIO.h"
 #include "USART.h"
+#include "Timer.h"
+#include "NVIC.h"
 #include <string.h>
 /* USER CODE END Includes */
 
@@ -80,7 +82,7 @@ char wordsBuffer[] = {
 	'\n',
 };
 
-uint8_t commandBuffer[100];
+char commandBuffer[100];
 
 
 void UARTtransmitBuffer(int i){
@@ -97,11 +99,37 @@ void UARTtransmitBuffer(int i){
 void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
 	if(!(strcasecmp(commandStr, "turn on"))){
 		GPIOwritePins(port, pins, PIN_SET);
+		disableTimer2Interrupt();
 	}
 	else if(!(strcasecmp(commandStr, "turn off"))){
 		GPIOwritePins(port, pins, PIN_RESET);
+		disableTimer2Interrupt();
+	}
+	else if(!(strcasecmp(commandStr, "blink"))){
+		configureTimer2Interrupt();
 	}
 }
+
+// The interrupt would be 125ms
+void configureTimer2Interrupt(){
+	RESET_TIMER_2_CLK_GATING();
+	UNRESET_TIMER_2_CLK_GATING();
+	ENABLE_TIMER_2_CLK_GATING();
+	(timer2)->arr = 375000;
+	(timer2)->psc = 29;
+	(timer2)->cnt = 0;
+	nvicEnableInterrupt(28);
+	TIM_INTERRUPT_ENABLE(timer2, TIM_UIE);
+	TIM_COUNTER_ENABLE(timer2);
+}
+
+void disableTimer2Interrupt(){
+
+	nvicDisableInterrupt(28);
+	TIM_COUNTER_DISABLE(timer2);
+	TIM_INTERRUPT_DISABLE(timer2, TIM_UIE);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -156,6 +184,7 @@ int main(void)
 						USART_PARITY_ODD \
 						| USART_TE_ENABLE | USART_RE_ENABLE ,115200, 45000000);
 
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -172,9 +201,8 @@ restart:
 		  if(usartIsRxRegNotEmpty(uart5)){
 			  commandBuffer[i] = (uart5)->DR;
 			  if(usartIsTxRegEmpty(uart5)){
-
-				  		(uart5)->DR = commandBuffer[i];
-				  }
+				  (uart5)->DR = commandBuffer[i];
+			  }
 			  if(commandBuffer[i] == '\b'){
 				  // check for backspace
 				  i--;
@@ -182,7 +210,7 @@ restart:
 			  }
 			  if(commandBuffer[i] == '\n'){
 				  commandBuffer[i] = '\0';
-				  commandLineOperation(GPIOG, GPIOPin14, commandBuffer);
+				  commandLineOperation(gpioG, GPIOPin14, commandBuffer);
 				  i = 0;
 				  goto restart;
 			  }
