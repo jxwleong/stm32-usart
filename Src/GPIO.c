@@ -92,8 +92,8 @@ int GPIOPinVal(GPIOPin pin){
 	case	GPIOPin14	: return 14;break;
 	case	GPIOPin15	: return 15;break;
 	}
-
 }
+
 /*Configure alternate function of one ports*/
 void GPIOConfigureAltFunc(GPIORegs *port, GPIOPin pin, int altFunc){
 	IORegister *altReg = &(port->altFuncLow);

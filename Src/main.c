@@ -96,20 +96,6 @@ void UARTtransmitBuffer(int i){
 
 }
 
-void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
-	if(!(strcasecmp(commandStr, "turn on"))){
-		GPIOwritePins(port, pins, PIN_SET);
-		disableTimer2Interrupt();
-	}
-	else if(!(strcasecmp(commandStr, "turn off"))){
-		GPIOwritePins(port, pins, PIN_RESET);
-		disableTimer2Interrupt();
-	}
-	else if(!(strcasecmp(commandStr, "blink"))){
-		configureTimer2Interrupt();
-	}
-}
-
 // The interrupt would be 125ms
 void configureTimer2Interrupt(){
 	RESET_TIMER_2_CLK_GATING();
@@ -124,11 +110,24 @@ void configureTimer2Interrupt(){
 }
 
 void disableTimer2Interrupt(){
-
 	nvicDisableInterrupt(28);
 	TIM_COUNTER_DISABLE(timer2);
 	TIM_INTERRUPT_DISABLE(timer2, TIM_UIE);
 }
+
+
+void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
+	if(!(strcasecmp(commandStr, "turn on"))){
+		GPIOwritePins(port, pins, PIN_SET);
+	}
+	else if(!(strcasecmp(commandStr, "turn off"))){
+		GPIOwritePins(port, pins, PIN_RESET);
+	}
+	else if(!(strcasecmp(commandStr, "blink"))){
+		configureTimer2Interrupt();
+	}
+}
+
 
 /* USER CODE END 0 */
 
@@ -170,6 +169,9 @@ int main(void)
   ENABLE_GPIOC_CLK_GATING();
   ENABLE_GPIOD_CLK_GATING();
   ENABLE_GPIOG_CLK_GATING();
+
+  //LED3
+   GPIOConfigurePin(gpioG, GPIOPin13, GPIO_OUTPUT|GPIO_PUSH_PULL |GPIO_HI_SPEED|GPIO_NO_PULL);
   //LED4
   GPIOConfigurePin(gpioG, GPIOPin14, GPIO_OUTPUT|GPIO_PUSH_PULL |GPIO_HI_SPEED|GPIO_NO_PULL);
   // UART5_TX
