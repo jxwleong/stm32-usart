@@ -155,9 +155,9 @@ struct USARTRegs{
 
 // STOP bits
 #define USART_STOP_BIT_1				(0ULL << 28)	// 1 Stop bits
-#define USART_STOP_BIT_0point5				(1ULL << 28)    // 0.5 Stop bits
+#define USART_STOP_BIT_0point5			(1ULL << 28)    // 0.5 Stop bits
 #define USART_STOP_BIT_2				(2ULL << 28)	// 2 Stop bits
-#define USART_STOP_BIT_1point5				(3ULL << 28)	// 1.5 Stop bits
+#define USART_STOP_BIT_1point5			(3ULL << 28)	// 1.5 Stop bits
 
 // LIN mode enable
 #define USART_LIN_DISABLE				(0ULL << 30)	// Lin mode disabled

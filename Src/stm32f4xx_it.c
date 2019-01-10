@@ -195,8 +195,15 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
+static int i;
 void TIM2_IRQHandler(void){
-	GPIOTogglePin(gpioG, GPIOPin13);
+	if(i < 8){
+		GPIOTogglePin(gpioG, GPIOPin13);
+		i++;
+	}
+	else
+		i = 0;
+
 	TIM_CLEAR_FLAG(timer2,TIM_UIF);
 }
 /* USER CODE END 1 */
