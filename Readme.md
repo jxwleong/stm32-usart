@@ -1,7 +1,7 @@
 # Summary
 1.[Basic Introduction](#intro)
- .1[Objective](#obj)
- .2[Requirement](#req)
+ 1.1.[Objective](#obj)
+  2[Requirement](#req)
  .3[Different applications](#diffApp)
 
 # <a name="obj"></a> Introduction
