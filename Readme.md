@@ -11,10 +11,13 @@ There are several exercises to go through in order to understand the way UART de
 The transmit and receive of data between the UART and PC is host through USB-to-serial converter module (CH340).
 
 # <a name="req"></a> Requirement
+STM32F429ZI microcontroller are used for this project.
 The following software are required in order to perform this practical :
+```md
     1. STM32CubeMX
     2. SystemWorkBenchForSTM32
     3. TeraTerm
+```   
     
 The UART5 is configured based on the settings as follow:
 ```md
