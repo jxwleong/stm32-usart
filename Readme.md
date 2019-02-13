@@ -1,6 +1,6 @@
 # Summary
 1. [Basic Introduction](#intro)
-2. [Objective](#obj)
+    1.1 [Objective](#obj)
 3. [Requirement](#req)
 4. [Different applications](#diffApp)
 
