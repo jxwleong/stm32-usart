@@ -2,8 +2,17 @@
 1. [Basic Introduction](#intro)
     1. [Objective](#obj)
     2. [Requirement](#req)
-    3. [Different applications](#diffApp)
-2. [Calculations](#calc)
+
+2. [Discussion](#disc)
+    1. [Different applications](#diffApp)
+        * [1-Byte transmission through UART5](#ex1)
+        * [Transmit “Hello World!” through UART5 to USB and display on TeraTerm](#ex2)
+        * [Turn on/off LED by using command from USB (transmit) to UART5 (receive)](#ex3)
+        * [Blinking LED 4 times per second using receive command from USB to 
+           UART5(involve timer interrupt)](#ex4)
+    2. [Calculations](#calc)
+        * [Baudrate](#baud)
+        * [Timer2 Interrupt](#interruptTim2)
 
 # <a name="obj"></a> Introduction
 # <a name="intro"></a> Objective
@@ -30,12 +39,9 @@ The UART5 is configured based on the settings as follow:
     6. Peripheral clock  : APB1 clock run at 45 MHz
 ```
 
+# <a name="disc"></a> Discussion
 # <a name="diffApp"></a> Different application of UART for this project
-1. [1-Byte transmission through UART5](#ex1)
-2. [Transmit “Hello World!” through UART5 to USB and display on TeraTerm](#ex2)
-3. [Turn on/off LED by using command from USB (transmit) to UART5 (receive)](#ex3)
-4. [Blinking LED 4 times per second using receive command from USB to 
-    UART5(involve timer interrupt)](#ex4)
+
 
 # <a name="ex1"></a> 1-Byte transmission through UART5.
 # <a name="ex2"></a> Transmission of "Hello Wrold!" through UART5.
@@ -43,8 +49,7 @@ The UART5 is configured based on the settings as follow:
 # <a name="ex4"></a> Blink the LED 4 times per second using command receive from USB.
 
 # <a name="calc"></a> Calculations
-1. [Baudrate](#baud)
-2. [Timer2 Interrupt](#interruptTim2)
+
 
 # <a name="baud"></a> Calculation of USART_DIV and Mantissa for configuration
 Based in the equation found on the data sheet,
@@ -58,6 +63,13 @@ OVER8 = 0   // OVER8 = 1 if oversampling by 8
 Freq = 45MHz // Clock Frequency
 
 USART_DIV = Fclk / [2* (2-OVER8)* BaudRate]
+USART_DIV = 45000000 / [2* (2- 0)* 115200]
+USART_DIV = 24.41
+Mantissa = 24
+
+Fractional part = 0.41* 16(shift left by 4-bits(*2^4) for 16-bits oversampling, 8-bits oversampling shift left by 3-bits(*2^3)) 
+Fractional part = 6.56 = 6
+
 ```
 
 # <a name="interruptTim2"></a> Calculation of counter value to allow LED blink 4 timers per second
