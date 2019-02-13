@@ -17,13 +17,15 @@ The following software are required in order to perform this practical :
     3. TeraTerm
     
 The UART5 is configured based on the settings as follow:
+```md
     1. Baudrate     : 115,200 bps
     2. Parity       : Odd parity
     3. Data size    : 8 bits data with parity bit
     4. Oversampling : Oversampling by 16
     5. Stop-bit size     : 1 bit
     6. Peripheral clock  : APB1 clock run at 45 MHz
-    
+```
+
 # <a name="diffApp"></a> Different application of UART for this project
 1. [1-Byte transmission through UART5](#ex1)
 2. [Transmit “Hello World!” through UART5 to USB and display on TeraTerm](#ex2)
