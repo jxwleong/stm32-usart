@@ -3,6 +3,7 @@
     1. [Objective](#obj)
     2. [Requirement](#req)
     3. [Different applications](#diffApp)
+2. [Calculations](#calc)
 
 # <a name="obj"></a> Introduction
 # <a name="intro"></a> Objective
@@ -40,3 +41,25 @@ The UART5 is configured based on the settings as follow:
 # <a name="ex2"></a> Transmission of "Hello Wrold!" through UART5.
 # <a name="ex3"></a> Turn on/off LED by command receive from USB.
 # <a name="ex4"></a> Blink the LED 4 times per second using command receive from USB.
+
+# <a name="calc"></a> Calculations
+1. [Baudrate](#baud)
+2. [Timer2 Interrupt](#interruptTim2)
+
+# <a name="baud"></a> Calculation of USART_DIV and Mantissa for configuration
+Based in the equation found on the data sheet,
+
+![alt text](https://github.com/jason9829/STM32_USART/blob/master/Practical2AssignmentPic/BaudRateEquation.JPG)
+
+```md
+Constant value:
+BaudRate = 115200
+OVER8 = 0   // OVER8 = 1 if oversampling by 8
+Freq = 45MHz // Clock Frequency
+
+USART_DIV = Fclk / [2* (2-OVER8)* BaudRate]
+```
+
+# <a name="interruptTim2"></a> Calculation of counter value to allow LED blink 4 timers per second
+
+
