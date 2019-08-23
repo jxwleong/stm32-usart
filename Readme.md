@@ -14,8 +14,8 @@
         * [Baudrate](#baud)
         * [Timer2 Interrupt](#interruptTim2)
 
-# <a name="obj"></a> Introduction
-# <a name="intro"></a> Objective
+# <a name="intro"></a> Introduction
+# <a name="obj"></a> Objective
 The purpose for this project is to learn how to configure the UART device on the STM32F429ZIT6 MCU.  
 There are several exercises to go through in order to understand the way UART device on this MCU works.  
 The transmit and receive of data between the UART and PC is host through USB-to-serial converter module (CH340).
