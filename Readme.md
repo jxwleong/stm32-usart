@@ -130,7 +130,7 @@ timer2 counter value = Blink period (desired) / timer2 period
 
 
 ## <a name="appdix"></a> Appendices   
-### <a name="#tTSetup"></a> Tera Term Setup    
+### <a name="tTSetup"></a> Tera Term Setup    
 1. Create new connection and select the correct COM port (USB-SERIAL CH340).
 ![Step1](https://github.com/jason9829/stm32-usart/blob/master/resources/images/TerTerm%20step1.png)  
 &nbsp;  
