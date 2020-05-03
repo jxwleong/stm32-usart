@@ -17,8 +17,8 @@ The transmit and receive of data between the UART and PC is host through USB-to-
     * [Calculations](#calc)
         * [Baudrate](#baud)
         * [Timer2 Interrupt](#interruptTim2)  
-3. [Appendices](#appdix) 
-   * Tera Term Setup(#tTSetup)
+3. [Appendices](#appdix)   
+   * [Tera Term Setup](#tTSetup)  
 
 <br/>
 
@@ -129,8 +129,8 @@ timer2 counter value = Blink period (desired) / timer2 period
 <br/>
 
 
-## <a name="appdix"></a> Appendices  
-### <a name="tTSetup"></a> Tera Term Setup
+## <a name="appdix"></a> Appendices   
+### <a name="#tTSetup"></a> Tera Term Setup    
 1. Create new connection and select the correct COM port (USB-SERIAL CH340).
 ![Step1](https://github.com/jason9829/stm32-usart/blob/master/resources/images/TerTerm%20step1.png)  
 &nbsp;  
