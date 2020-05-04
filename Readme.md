@@ -52,20 +52,49 @@ The connection between the USB to UART Dongle and the MCU are shown at figure be
 <br/>  
 
 ## <a name="whatIs"></a> What is USART/ UART ?  
-### USART (Universal Synchronous/Asynchronous Receiver/Trasmitter)
-![World length programming](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_969.png)  
-Figure x. Different data frame with different word length configuration  
+### USART (Universal Synchronous/Asynchronous Receiver/Trasmitter)  
+USART is a serial communication device that can support both synchronous and asynchronous communications. USART comes with an advantage with the additional support of asynchronous communications. USART and UART are both compatible in asynchronous mode which mean that both of the devices can be communicate with each other if the USART is set to transmit data in asynchronous mode. In other words, USART can function as an UART device (if set to asynchronous mode) while UART cannot function act an USART deivce. 
 
-&nbsp;  
-![Configurable stop bits](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_971.png)  
-Figure x. Different data frames for different stop bits configuration from [1] page 971.
+When USART is set up to run in synchronous mode, the sender will generate a clock so that the receiving peripheral can recover from the data stream without knowing the baud rate ahead of time [6] which mean that the sender and receiver share a common clock. Unlike in asynchronous mode, synchronous mode allows the transmission of a block of data (instead of 1 byte at a time) with just one start and stop bit which reduce the overhead issues.
+
+The explanation of asynchronous communication will be located at UART section.
+
+
 
 &nbsp;
 
 ### UART (Universal Asynchronous Receiver/Transmitter)
-UART is a computing device used for asynchronous serial communication whereby the data format and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [4].
+UART is a computing device used for asynchronous serial communication whereby the data frame and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [4].
 
-The transmission speeds of UART is baud rate. Baud rate is the rate of data transmission over a channel in bits. For example, baud rate of *9600* means that the peripherals is able to transmit a maximum of 9600 bits of data over the communication channel.
+![World length programming](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_969.png)  
+Figure x. Different data frame with different word length configuration  
+
+```
+Description of control register 1 to change the data size. (RM0090 page 1011)
+Bit 12 M: Word length
+This bit determines the word length. It is set or cleared by software.
+0: 1 Start bit, 8 Data bits, n Stop bit
+1: 1 Start bit, 9 Data bits, n Stop bit
+Note: The M bit must not be modified during a data transfer (both transmission and reception)
+
+Description of control register 2 to change the stop bit size. (RM0090 page 1013)
+Bits 13:12 STOP: STOP bits
+These bits are used for programming the stop bits.
+00: 1 Stop bit
+01: 0.5 Stop bit
+10: 2 Stop bits
+11: 1.5 Stop bit
+Note: The 0.5 Stop bit and 1.5 Stop bit are not available for UART4 & UART5.
+```
+
+Figure above shows the different frame structure with different size of data packet. Based on the snippet above, there are two size for data bits which are 8 or 9. The changing of data bits can done by writing 0 or 1 to bit 12 of control register 1. Moreover, the stop bit size can be change for both USART and UART. Different bigger stop bits provide the receiver extra processing time to handle the data.
+
+
+The transmission speeds of UART is baud rate. Baud rate is the rate of data transmission over a channel in bits. For example, baud rate of *9600* means that the peripherals is able to transmit a maximum of 9600 bits of data over the communication channel. The baud rate can be changed by program the baud rate register (USART_BRR) by using the value calculated by using [this method](#baud).
+
+
+
+&nbsp;  
 
 <br/>  
 
@@ -154,8 +183,9 @@ timer2 counter value = Blink period (desired) / timer2 period
 [2] Difference between USART and UART, GeeksforGeeks. Available at: https://www.geeksforgeeks.org/difference-between-usart-and-uart/ (viewed on 4 May 2020)  
 [3] Universal synchronous and asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter (viewed on 4 May 2020)    
 [4] Universal asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter (viewed on 4 May 2020)  
-[5] BASICS OF UART COMMUNICATION, Circuit Basics. Available at: https://www.circuitbasics.com/basics-uart-communication/ (viewed on 4 May 2020)    
-
+[5] BASICS OF UART COMMUNICATION, Circuit Basics. Available at: https://www.circuitbasics.com/basics-uart-communication/ (viewed on 4 May 2020)   
+[6] USART vs UART: Know the difference, Beningo, 2015. Available at: https://www.edn.com/usart-vs-uart-know-the-difference/ (viewed on 4 May 2020)   
+[7] Difference between UART and USARt (UART vs USART), Amlendra. Available at: https://aticleworld.com/difference-between-uart-and-usart/ viewed on 4 May 2020)   
 
 
 <br/>
