@@ -8,6 +8,9 @@ The transmit and receive of data between the UART and PC is host through USB-to-
 ## Table of Contents
 1. [Requirement](#req)
 2. [What is USART/ UART ?](#whatIs)
+   * [USART](#usart)
+   * [UART](#uart)
+   * [Differences between USART and UART](#diffUU)
 3. [Discussion](#disc)
     * [Different applications](#diffApp)
         * [1-Byte transmission through UART5](#ex1)
@@ -52,7 +55,7 @@ The connection between the USB to UART Dongle and the MCU are shown at figure be
 <br/>  
 
 ## <a name="whatIs"></a> What is USART/ UART ?  
-### USART (Universal Synchronous/Asynchronous Receiver/Trasmitter)  
+### <a name="usart"></a> USART (Universal Synchronous/Asynchronous Receiver/Trasmitter)  
 USART is a serial communication device that can support both synchronous and asynchronous communications. USART comes with an advantage with the additional support of asynchronous communications. USART and UART are both compatible in asynchronous mode which mean that both of the devices can be communicate with each other if the USART is set to transmit data in asynchronous mode. In other words, USART can function as an UART device (if set to asynchronous mode) while UART cannot function act an USART deivce. 
 
 When USART is set up to run in synchronous mode, the sender will generate a clock so that the receiving peripheral can recover from the data stream without knowing the baud rate ahead of time [6] which mean that the sender and receiver share a common clock. Unlike in asynchronous mode, synchronous mode allows the transmission of a block of data (instead of 1 byte at a time) with just one start and stop bit which reduce the overhead issues.
@@ -61,9 +64,9 @@ The explanation of asynchronous communication will be located at UART section.
 
 
 
-&nbsp;
+&nbsp;  
 
-### UART (Universal Asynchronous Receiver/Transmitter)
+### <a name="uart"></a> UART (Universal Asynchronous Receiver/Transmitter)
 UART is a computing device used for asynchronous serial communication whereby the data frame and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [4].
 
 ![World length programming](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_969.png)  
@@ -86,15 +89,31 @@ These bits are used for programming the stop bits.
 11: 1.5 Stop bit
 Note: The 0.5 Stop bit and 1.5 Stop bit are not available for UART4 & UART5.
 ```
+&nbsp;  
 
-Figure above shows the different frame structure with different size of data packet. Based on the snippet above, there are two size for data bits which are 8 or 9. The changing of data bits can done by writing 0 or 1 to bit 12 of control register 1. Moreover, the stop bit size can be change for both USART and UART. Different bigger stop bits provide the receiver extra processing time to handle the data.
+Figure above shows the different frame structure with different size of data packet. Unlike USART in synchronous mode, the allowed data to be transmitted is either 8 or 9-bit within one start and n stop bit (Based on snippet above).
+
+The changing of data bits can done by writing 0 or 1 to bit 12 of control register 1. Moreover, the stop bit size can be change for both USART and UART. Use of bigger stop bits provides the receiver extra processing time to handle the data.
 
 
 The transmission speeds of UART is baud rate. Baud rate is the rate of data transmission over a channel in bits. For example, baud rate of *9600* means that the peripherals is able to transmit a maximum of 9600 bits of data over the communication channel. The baud rate can be changed by program the baud rate register (USART_BRR) by using the value calculated by using [this method](#baud).
 
 
+&nbsp;    
 
-&nbsp;  
+### <a name="diffUU"></a> Differences between USART and UART
+Refer from [2] and [7].
+
+| Differences        | USART                                                                                                                                   | UART                                                                                                                      |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Baud rate          | Receiver don't have to know the baud rate, it will derived it from the clock signal  and data line from sender.                         | Receiver need to knows the baud rate because there is no incoming clock signal from sender.                               |
+| Data line required | Require data and lock line.                                                                                                             | Only require data line.                                                                                                   |
+| Data form          | Data is transmitted in block form.                                                                                                      | Data is transmitted each byte at a time.                                                                                  |
+| Transmission speed | Transmission speed is faster.                                                                                                           | Slower transmission speed.                                                                                                |
+| Functionality      | USART can function as UART.                                                                                                             | UART can function as USART.                                                                                               |
+| Complexity         | USART is more complex and can generate data in a form corresponding to many different standard protocols such as IrDA, LIN, Smart Card. | UART is simple and only slight differences from it's base format, such as the number of stop bits and even or odd parity. |
+
+
 
 <br/>  
 
