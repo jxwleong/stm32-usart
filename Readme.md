@@ -11,7 +11,8 @@ The transmit and receive of data between the UART and PC is host through USB-to-
    * [USART](#usart)
    * [UART](#uart)
    * [Differences between USART and UART](#diffUU)
-3. [Discussion](#disc)
+3. [Important information from datasheet](#importDS)
+4. [Discussion](#disc)
     * [Different applications](#diffApp)
         * [1-Byte transmission through UART5](#ex1)
         * [Transmit “Hello World!” through UART5 to USB and display on TeraTerm](#ex2)
@@ -21,8 +22,8 @@ The transmit and receive of data between the UART and PC is host through USB-to-
     * [Calculations](#calc)
         * [Baudrate](#baud)
         * [Timer2 Interrupt](#interruptTim2)  
-4. [References](#refer)          
-5. [Appendices](#appdix)   
+5. [References](#refer)          
+6. [Appendices](#appdix)   
    * [Tera Term Setup](#tTSetup)  
 
 <br/>
@@ -111,9 +112,12 @@ Refer from [2] and [7].
 | Data form          | Data is transmitted in block form.                                                                                                      | Data is transmitted each byte at a time.                                                                                  |
 | Transmission speed | Transmission speed is faster.                                                                                                           | Slower transmission speed.                                                                                                |
 | Functionality      | USART can function as UART.                                                                                                             | UART can function as USART.                                                                                               |
-| Complexity         | USART is more complex and can generate data in a form corresponding to many different standard protocols such as IrDA, LIN, Smart Card. | UART is simple and only slight differences from it's base format, such as the number of stop bits and even or odd parity. |
+| Complexity         | USART is more complex and can generate data in a form corresponding to many different standard protocols such as IrDA, LIN, Smart Card. | UART is simple and only slight differences from it's base format, such as the number of stop bits and even or odd parity. |  
 
 
+<br/>
+
+## <a name="importDS"></a> Important information from datasheet 
 
 <br/>  
 
@@ -139,12 +143,38 @@ Figure x. Result of transmitting "Hello World!" using UART5.
 <br/>
 
 #### <a name="ex3"></a> Turn on/off LED by command receive from USB.  
-![Function to toggle LED](https://github.com/jason9829/stm32-usart/blob/master/resources/images/function%20snippet/commandlineBlink.JPG)    
+```c
+void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
+	if(!(strcasecmp(commandStr, "turn on"))){
+		GPIOwritePins(port, pins, PIN_SET);
+	}
+	else if(!(strcasecmp(commandStr, "turn off"))){
+		GPIOwritePins(port, pins, PIN_RESET);
+	}
+	else if(!(strcasecmp(commandStr, "blink"))){
+		configureTimer2Interrupt();
+	}
+}
+```  
 
 <br/>  
 
 #### <a name="ex4"></a> Blink the LED 4 times per second using command receive from USB.   
-![Interrupt Service Routine for blinking the LED](https://github.com/jason9829/stm32-usart/blob/master/resources/images/function%20snippet/InterruptServiceRoutine.JPG)  
+
+```c
+static int i;
+void TIM2_IRQHandler(void){
+	if(i < 8){
+		GPIOTogglePin(gpioG, GPIOPin13);
+		i++;
+	}
+	else
+		i = 0;
+
+	TIM_CLEAR_FLAG(timer2,TIM_UIF);
+}
+```  
+
 
 <br/>
 
@@ -204,7 +234,7 @@ timer2 counter value = Blink period (desired) / timer2 period
 [4] Universal asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter (viewed on 4 May 2020)  
 [5] BASICS OF UART COMMUNICATION, Circuit Basics. Available at: https://www.circuitbasics.com/basics-uart-communication/ (viewed on 4 May 2020)   
 [6] USART vs UART: Know the difference, Beningo, 2015. Available at: https://www.edn.com/usart-vs-uart-know-the-difference/ (viewed on 4 May 2020)   
-[7] Difference between UART and USARt (UART vs USART), Amlendra. Available at: https://aticleworld.com/difference-between-uart-and-usart/ viewed on 4 May 2020)   
+[7] Difference between UART and USART (UART vs USART), Amlendra. Available at: https://aticleworld.com/difference-between-uart-and-usart/ (viewed on 4 May 2020)   
 
 
 <br/>
