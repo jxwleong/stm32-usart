@@ -13,6 +13,7 @@ The transmit and receive of data between the UART and PC is host through USB-to-
    * [Differences between USART and UART](#diffUU)
 3. [Important information from datasheet](#importDS)
    * [Flow of Transmit and Receive Data](#flowTRX)
+   * [Alternate Functions](#altFunc)
 4. [Discussion](#disc)
     * [Different applications](#diffApp)
         * [1-Byte transmission through UART5](#ex1)
@@ -130,6 +131,12 @@ The meaning of the acronym can be found in Table 147 in [1]. The flow of receive
 Firstly, the RXNE (read data register not empty) flag status is checked. If the flag indicates that the receive data register (RxReg) is empty, this means that either the data received are still shifting or there are not incoming data. When the RXNE flag shows the the RxReg is not empty (data is ready to be read), the data in RxReg will be copied into USART_DR (Data register). The data can be now readed by accessing the USART_DR register. This is the process of receiving data.
 
 To transmit the data, the data must be loaded into USART_DR register described at previous paragraph. The TXE (transmit data register empty) flag is checked. Only if the transmit data register (TxReg) is empty, the data in USART_DR register will be loaded into the transmit datar register. Then, the data in transmit data register will be shifted out.
+
+
+<br/>  
+
+### <a name="flowTRX"></a> Alternate Functions  
+There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. Change changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals.
 
 
 <br/>  
