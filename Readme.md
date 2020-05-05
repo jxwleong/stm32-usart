@@ -68,7 +68,7 @@ The explanation of asynchronous communication will be located at UART section.
 &nbsp;  
 
 ### <a name="uart"></a> UART (Universal Asynchronous Receiver/Transmitter)
-UART is a computing device used for asynchronous serial communication whereby the data frame and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [4].
+UART is a computing device used for asynchronous serial communication whereby the data frame and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [5].
 
 ![World length programming](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_969.png)  
 Figure x. Different data frame with different word length configuration  
@@ -103,7 +103,7 @@ The transmission speeds of UART is baud rate. Baud rate is the rate of data tran
 &nbsp;    
 
 ### <a name="diffUU"></a> Differences between USART and UART
-Refer from [2] and [7].
+Refer from [3] and [8].
 
 | Differences        | USART                                                                                                                                   | UART                                                                                                                      |
 |--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
@@ -229,12 +229,13 @@ timer2 counter value = Blink period (desired) / timer2 period
 
 ## <a name="refer"></a> References  
 [1] [[RM0090] STM32F429 Reference Manual](https://github.com/jason9829/stm32-usart/blob/master/resources/pdf/%5BRM0090%5D%20STM32F429%20Reference%20Manual.pdf)  
-[2] Difference between USART and UART, GeeksforGeeks. Available at: https://www.geeksforgeeks.org/difference-between-usart-and-uart/ (viewed on 4 May 2020)  
-[3] Universal synchronous and asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter (viewed on 4 May 2020)    
-[4] Universal asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter (viewed on 4 May 2020)  
-[5] BASICS OF UART COMMUNICATION, Circuit Basics. Available at: https://www.circuitbasics.com/basics-uart-communication/ (viewed on 4 May 2020)   
-[6] USART vs UART: Know the difference, Beningo, 2015. Available at: https://www.edn.com/usart-vs-uart-know-the-difference/ (viewed on 4 May 2020)   
-[7] Difference between UART and USART (UART vs USART), Amlendra. Available at: https://aticleworld.com/difference-between-uart-and-usart/ (viewed on 4 May 2020)   
+[2] [[DS9405] Product Specifications](https://github.com/jason9829/stm32-usart/blob/master/resources/pdf/%5BDS9405%5D%20Product%20Specifications.pdf)   
+[3] Difference between USART and UART, GeeksforGeeks. Available at: https://www.geeksforgeeks.org/difference-between-usart-and-uart/ (viewed on 4 May 2020)  
+[4] Universal synchronous and asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter (viewed on 4 May 2020)    
+[5] Universal asynchronous receiver-transmitter, Wikipedia, 2020. Available at: https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter (viewed on 4 May 2020)  
+[6] BASICS OF UART COMMUNICATION, Circuit Basics. Available at: https://www.circuitbasics.com/basics-uart-communication/ (viewed on 4 May 2020)   
+[7] USART vs UART: Know the difference, Beningo, 2015. Available at: https://www.edn.com/usart-vs-uart-know-the-difference/ (viewed on 4 May 2020)   
+[8] Difference between UART and USART (UART vs USART), Amlendra. Available at: https://aticleworld.com/difference-between-uart-and-usart/ (viewed on 4 May 2020)   
 
 
 <br/>
