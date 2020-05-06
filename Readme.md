@@ -14,6 +14,8 @@ The transmit and receive of data between the UART and PC is host through USB-to-
 3. [Important information from datasheet](#importDS)
    * [Flow of Transmit and Receive Data](#flowTRX)
    * [Alternate Functions](#altFunc)
+   * [GPIO Registers](#gpioReg)
+   * [USART Registers](#usartReg)
 4. [Discussion](#disc)
     * [Different applications](#diffApp)
         * [1-Byte transmission through UART5](#ex1)
@@ -136,10 +138,30 @@ To transmit the data, the data must be loaded into USART_DR register described a
 <br/>  
 
 ### <a name="altFunc"></a> Alternate Functions  
-There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. By changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals.  
+There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. By changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals. USART in this MCU are shared with GPIO. Thus, GPIO registers are needed to configured to allow USART to access to the I/O pin. The circuitry of the I/O pin is shown at figure below. 
+
+![GPIO pin circuit](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/gpioPinCircuit.PNG)
+Figure x. The I/O pin circuitry from page 268 in [1].  
+
+&nbsp;
+![Alternate fuunction mux](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/altFuncMux.PNG)  
+Figure x. The circuitry for different alternate function from page 273 in [1].  
+
+&nbsp;  
+![Alternate function mapping for UART5](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIO_ALT_FUNC.png)  
+Figure x. The alternate function pin for UART5 from page 78 in [2].
+&nbsp;  
+
+For this project, UART5 was used for transmit and receive the data. Based on the information shown at figure above, pin `PC12` is used for transmission of UART5 and pin `PD2` is used for receiving data.
 
 
+<br/>   
 
+### <a name="gpioReg"></a> GPIO Registers
+
+<br/>   
+
+### <a name="usartReg"></a> USART Registers  
 
 <br/>  
 
