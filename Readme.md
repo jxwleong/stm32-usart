@@ -113,7 +113,7 @@ Refer from [3] and [8].
 | Data line required | Require data and lock line.                                                                                                             | Only require data line.                                                                                                   |
 | Data form          | Data is transmitted in block form.                                                                                                      | Data is transmitted each byte at a time.                                                                                  |
 | Transmission speed | Transmission speed is faster.                                                                                                           | Slower transmission speed.                                                                                                |
-| Functionality      | USART can function as UART.                                                                                                             | UART can function as USART.                                                                                               |
+| Functionality      | USART can function as UART.                                                                                                             | UART cannot function as USART.                                                                                               |
 | Complexity         | USART is more complex and can generate data in a form corresponding to many different standard protocols such as IrDA, LIN, Smart Card. | UART is simple and only slight differences from it's base format, such as the number of stop bits and even or odd parity. |  
 
 
@@ -130,13 +130,15 @@ The meaning of the acronym can be found in Table 147 in [1]. The flow of receive
 
 Firstly, the RXNE (read data register not empty) flag status is checked. If the flag indicates that the receive data register (RxReg) is empty, this means that either the data received are still shifting or there are not incoming data. When the RXNE flag shows the the RxReg is not empty (data is ready to be read), the data in RxReg will be copied into USART_DR (Data register). The data can be now readed by accessing the USART_DR register. This is the process of receiving data.
 
-To transmit the data, the data must be loaded into USART_DR register described at previous paragraph. The TXE (transmit data register empty) flag is checked. Only if the transmit data register (TxReg) is empty, the data in USART_DR register will be loaded into the transmit datar register. Then, the data in transmit data register will be shifted out.
+To transmit the data, the data must be loaded into USART_DR register described at previous paragraph. The TXE (transmit data register empty) flag is checked. Only if the transmit data register (TxReg) is empty, the data in USART_DR register will be loaded into the transmit data register. Then, the data in transmit data register will be shifted out.
 
 
 <br/>  
 
-### <a name="flowTRX"></a> Alternate Functions  
-There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. Change changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals.
+### <a name="altFunc"></a> Alternate Functions  
+There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. By changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals.  
+
+
 
 
 <br/>  
