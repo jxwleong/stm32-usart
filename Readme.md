@@ -161,6 +161,8 @@ For this project, UART5 was used for transmit and receive the data. Based on the
 Only used GPIO registers will be discussed. 
 
 1. **GPIO port mode register (GPIOx_MODER) (x = A..I/J/K)**  
+    &nbsp;   
+    This register is used to configure the I/O direction for each GPIO ports.  
     ![GPIOx_MODER](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_MODER.PNG)  
     Figure x. The register map for GPIOx_MODER from page 281 at [1].  
     &nbsp;   
@@ -175,6 +177,8 @@ Only used GPIO registers will be discussed.
        
     &nbsp;    
 2. **GPIO port output type register (GPIOx_OTYPER) (x = A..I/J/K)**  
+    &nbsp;  
+    This register is used to configure the output type of each GPIO ports.  
     ![GPIOx_OTYPER](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_OTYPER.PNG) 
     Figure x. The register map for GPIOx_OTYPER from page 281 at [1].  
     &nbsp;   
@@ -189,6 +193,8 @@ Only used GPIO registers will be discussed.
          
     &nbsp;  
 3. **GPIO port output speed register (GPIOx_OSPEEDR) (x = A..I/J/K)**  
+    &nbsp;  
+    This register is used to configure the I/O output speed for each GPIO ports.  
     ![GPIOx_OSPEEDR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_OSPEEDR.PNG)  
     Figure x. The register map for GPIOx_OSPEEDR from page 282 at [1].  
     &nbsp;  
@@ -205,6 +211,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp; 
 4. **GPIO port pull-up/pull-down register (GPIOx_PUPDR) (x = A..I/J/K)**  
+    &nbsp;  
+    This register is used to configure I/O to be pull-up or pull-down.  
     ![GPIOx_PUPDR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_PUPDR.PNG)   
     Figure x. The register map for GPIOx_PUPDR from page 282 at [1]. 
     &nbsp;  
@@ -218,7 +226,9 @@ Only used GPIO registers will be discussed.
     ```
         
     &nbsp; 
-5. **GPIO alternate function low register (GPIOx_AFRL) (x = A..I/J/K)**
+5. **GPIO alternate function low register (GPIOx_AFRL) (x = A..I/J/K)**  
+    &nbsp;  
+    This register is usedto configure the alternate function I/Os.
     ![GPIOx_AFRL](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_AFRL.PNG)   
     Figure x. The register map for GPIOx_AFRL from page 285 at [1]. 
     &nbsp;   
@@ -239,6 +249,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp;  
 6. **GPIO alternate function high register (GPIOx_AFRH) (x = A..I/J)**  
+    &nbsp;  
+    This register is usedto configure the alternate function I/Os.
     ![GPIOx_AFRH](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_AFRH.PNG)   
     Figure x. The register map for GPIOx_AFRH from page 286 at [1]. 
     &nbsp;  
@@ -264,6 +276,8 @@ Only used GPIO registers will be discussed.
 
 ### <a name="usartReg"></a> USART Registers  
 1. **Status register (USART_SR)**  
+    &nbsp;  
+    The register will used to show the status of the USART (flag or error).   
     ![USART_SR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_SR.PNG)  
     Figure x. The register map for USART_SR from page 1007 at [1].  
     &nbsp;  
@@ -359,6 +373,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp;  
 2. **Baud rate register (USART_BRR)**  
+    &nbsp;  
+    This register is used to configure the baud rate of USART.  
     ![USART_BRR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_BRR.PNG)  
     Figure x. The register map for USART_BRR from page 1010 at [1]. 
     &nbsp;  
@@ -374,6 +390,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp; 
 3. **Control register 1 (USART_CR1)**  
+    &nbsp;  
+    This register is used to configure the USART.  
     ![USART_CR1](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR1.PNG)  
     Figure x. The register map for USART_BRR from page 1010 at [1]. 
     &nbsp;  
@@ -462,6 +480,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp;   
 4. **Control register 2 (USART_CR2)**  
+    &nbsp;  
+    This register is used to configure the USART.  
     ![USART_CR2](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR2.PNG)  
     Figure x. The register map for USART_BRR from page 1013 at [1]. 
     &nbsp;  
@@ -526,6 +546,8 @@ Only used GPIO registers will be discussed.
     
     &nbsp;     
 5. **Control register 3 (USART_CR3)**  
+    &nbsp;  
+    This register is used to configure the USART.  
     ![USART_CR3](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR3.PNG)  
     Figure x. The register map for USART_BRR from page 1014 at [1]. 
     &nbsp; 
