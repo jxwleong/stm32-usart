@@ -173,7 +173,8 @@ Only used GPIO registers will be discussed.
 	01: General purpose output mode
 	10: Alternate function mode
 	11: Analog mode
-    ```
+    ```  
+    > For the use of USART5, GPIO port C (PC12) and D (PD2) was used based on Figure x. In other words, GPIOC_MODER's bit 25:24          (MODER12) are set       to binary 10 and GPIOD_MODER's bit 5:4 (MODER2) is also set to binary 10 for the user of transmitting and receiving data using I/Os.
        
     &nbsp;    
 2. **GPIO port output type register (GPIOx_OTYPER) (x = A..I/J/K)**  
@@ -245,7 +246,8 @@ Only used GPIO registers will be discussed.
 	0110: AF6         1110: AF14
 	0111: AF7         1111: AF15
 
-    ```
+    ```  
+    > GPIOD_AFRL's AFRL2 was loaded with bit 1000 (AF8) so that the correct alternate function will be chosen using the multiplexer shown in Figure x.
     
     &nbsp;  
 6. **GPIO alternate function high register (GPIOx_AFRH) (x = A..I/J)**  
@@ -266,7 +268,8 @@ Only used GPIO registers will be discussed.
 	0101: AF5         1101: AF13
 	0110: AF6         1110: AF14
 	0111: AF7         1111: AF15
-    ```
+    ```  
+    > GPIOD_AFRH's AFRH12 was loaded with bit 1000 (AF8) so that the correct alternate function will be chosen using the multiplexer shown in Figure x.
    
     &nbsp;  
 
