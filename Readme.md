@@ -18,11 +18,11 @@ The transmit and receive of data between the UART and PC is host through USB-to-
    * [USART Registers](#usartReg)
 4. [Discussion](#disc)
     * [Different applications](#diffApp)
-        * [1-Byte transmission through UART5](#ex1)
-        * [Transmit “Hello World!” through UART5 to USB and display on TeraTerm](#ex2)
-        * [Turn on/off LED by using command from USB (transmit) to UART5 (receive)](#ex3)
+        * [1-Byte transmission through USART5](#ex1)
+        * [Transmit “Hello World!” through USART5 to USB and display on TeraTerm](#ex2)
+        * [Turn on/off LED by using command from USB (transmit) to USART5 (receive)](#ex3)
         * [Blinking LED 4 times per second using receive command from USB to 
-           UART5(involve timer interrupt)](#ex4)
+           USART5(involve timer interrupt)](#ex4)
     * [Calculations](#calc)
         * [Baudrate](#baud)
         * [Timer2 Interrupt](#interruptTim2)  
@@ -627,31 +627,81 @@ Only used GPIO registers will be discussed.
 <br/>  
 
 ## <a name="disc"></a> Discussion
-### <a name="diffApp"></a> Different application of UART for this project  
-
-
-#### <a name="ex1"></a> 1-Byte transmission through UART5.  
+### <a name="diffApp"></a> Different application of USART for this project  
+#### <a name="ex1"></a> 1-Byte transmission through USART5.  
+The following settings are configured into USART5 (receive):  
+```c
+1. Oversampling: 16
+2. Word length: 9-bit (8 bit data w/ 1 parity bit)  
+3. Stop bit: 1-bit 
+4. Parity selection: Odd parity
+5. Parity control enable: Enabled
+6. USART enable: Enabled
+7. Transmitter enable: Enabled
+8. Receiver enable: Enabled
+```  
 ![Result of oscilloscope no parity](https://github.com/jason9829/stm32-usart/blob/master/resources/images/waveform/0_parity.JPG)  
-Figure 18. Result of sending decimal `86` via UART5 without parity   
-
+Figure 18. Result of sending decimal `86` via USART5 without parity   
 &nbsp;    
-
+Odd parity was set for USART5. The binary representation (MSB to LSB) of `86` is `10000110`. The number of 1's is odd. Thus, the parity bit is set to 0.
 
 
 <br/>  
 
 ![Result of oscilloscope parity](https://github.com/jason9829/stm32-usart/blob/master/resources/images/waveform/oneParity.png)  
-Figure 19. Result of sending decimal `96` via UART5 with parity      
+Figure 19. Result of sending decimal `96` via USART5 with parity      
+&nbsp;    
+USART5 is configured with odd parit. The binary representation (MSB to LSB) of `96` is `10010110`. The number of 1's is even. Hence, the parity bit is set to 1 to ensure that the number of 1's in the data are odd.
 
 <br/>
 
-#### <a name="ex2"></a> Transmission of "Hello World!" through UART5.  
+#### <a name="ex2"></a> Transmission of "Hello World!" through USART5.  
 ![Result of sending Hello World!](https://github.com/jason9829/stm32-usart/blob/master/resources/images/tera%20term/helloWORLD.JPG)   
-Figure 20. Result of transmitting "Hello World!" using UART5  
+Figure 20. Result of transmitting `"Hello World!"` using USART5  
+&nbsp;    
+An array of characters (wordsBuffer) that contains "Hellow World!" was created. When the transmit register (TxReg) is ready for transmitting the data, the data register (DR) will be loaded with the data in wordsBuffer. The transmission will stop when line feed character '\n' was detected. The data transmitted will be received by the USB dongle connected to the PC. The results of the transmission are displayed on Tera Term as shown in Figure 20. The functions below are used for the transmission of `"Hello  World!"`.    
+```c
+// Function called in main function loop whie(1)
+void UARTtransmitBuffer(int i){
+	  if(usartIsTxRegEmpty(uart5)){
+		  (uart5)->DR = wordsBuffer[i];
+		  i++;
+		  if(wordsBuffer[i-1] == '\n'){
+		 	i = 0;
+		 }
+	  }
+}
+```
 
 <br/>
 
 #### <a name="ex3"></a> Turn on/off LED by command receive from USB.  
+```c
+// Code in main function loop while(1)
+restart:
+	if(usartIsRxRegNotEmpty(uart5)){
+		commandBuffer[i] = (uart5)->DR;
+		if(usartIsTxRegEmpty(uart5)){	// To display the character entered on Tera Term
+			(uart5)->DR = commandBuffer[i];
+		}
+		if(commandBuffer[i] == '\b'){
+		// check for backspace
+			i--;
+			goto restart;
+		}
+		if(commandBuffer[i] == '\n'){
+			commandBuffer[i] = '\0';
+			commandLineOperation(gpioG, GPIOPin14, commandBuffer);
+			i = 0;
+			goto restart;
+		}
+		i++;
+```  
+&nbsp;  
+The entered by user in Tera Term will be transmitted into the USART5 when the data in receive register (RxReg) is ready to read. THe data will be stored in an array (commandBuffer). The USART5 will be transmitting the same received data back to the PC to display the character entered by user in Tera Term.  
+
+When backspace character is detected, the next new data will replaced the old data. If the line feed character `'\n'` was detected, the `'\n'` will be replaced with `'\0'` to use the string compare function `strcasecmp(const char *s1, const char *s2)` in `commandLineOperation(gpioG, GPIOPin14, commandBuffer)` to perform the correct commands.   
+&nbsp;  
 ```c
 void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
 	if(!(strcasecmp(commandStr, "turn on"))){
@@ -664,12 +714,30 @@ void commandLineOperation(GPIORegs *port, GPIOPin pins, char *commandStr){
 		configureTimer2Interrupt();
 	}
 }
-```  
+``` 
+&nbsp;  
+Code above shows the algorithm for perform the commands based on data inputted by user using USART5. If the command is `"turn on"`, then the GPIO connected to the LED will be set HIGH likewise if the command is `"turn off"` the GPIO will set to LOW. Otherwise, if the command is "blink", timer2 interrupt will be configured to blink the LED (next subsection).
 
 <br/>  
 
 #### <a name="ex4"></a> Blink the LED 4 times per second using command receive from USB.   
-
+&nbsp;  
+```c
+// The interrupt would be 125ms
+void configureTimer2Interrupt(){
+	RESET_TIMER_2_CLK_GATING();
+	UNRESET_TIMER_2_CLK_GATING();
+	ENABLE_TIMER_2_CLK_GATING();
+	(timer2)->arr = 375000;
+	(timer2)->psc = 29;
+	(timer2)->cnt = 0;
+	nvicEnableInterrupt(28);
+	TIM_INTERRUPT_ENABLE(timer2, TIM_UIE);
+	TIM_COUNTER_ENABLE(timer2);
+}
+```
+This code above shows algorithm to configure the timer2 when command `"blink"` was entered by user. Based on the [calculation](interruptTim2), the auto-reload register (arr) of timer2 was loaded with 375000 and the pre-scaler was set to 29. This configuration will cause timer2 interrupt every 125ms. For every 125ms, the MCU will service the interrupt service routine as shown below.  
+&nbsp; 
 ```c
 static int i;
 void TIM2_IRQHandler(void){
@@ -683,13 +751,13 @@ void TIM2_IRQHandler(void){
 	TIM_CLEAR_FLAG(timer2,TIM_UIF);
 }
 ```  
+&nbsp;  
+For every 125ms, the GPIO pin connected to the LED will be toggle. The numbers of toggling the LED is 8 because `8 * 125ms = 1s`. Then, `TIM_UIF` flag was cleared to reset the update interrupt flag otherwise next interrupt will be occurred.
 
 
 <br/>
 
 ## <a name="calc"></a> Calculations  
-
-
 ### <a name="baud"></a> Calculation of USART_DIV and Mantissa for configuration
 Based in the equation found on the data sheet,
 
@@ -712,7 +780,6 @@ Fractional part = 6.56 = 6
 ```
 
 ### <a name="interruptTim2"></a> Calculation of counter value to allow LED blink 4 timers per second  
-
 ```md
 Blink 4 times per second,
 One cycle of on and off equals to one blink.
