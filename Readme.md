@@ -722,7 +722,6 @@ Code above shows the algorithm for perform the commands based on data inputted b
 <br/>  
 
 #### <a name="ex4"></a> Blink the LED 4 times per second using command receive from USB.   
-&nbsp;  
 ```c
 // The interrupt would be 125ms
 void configureTimer2Interrupt(){
@@ -827,7 +826,9 @@ timer2 counter value = Blink period (desired) / timer2 period
 2. Goto terminal setup and configure the `New-line` to LF (Line Feed). 
 ![Step2](https://github.com/jason9829/stm32-usart/blob/master/resources/images/tera%20term/teraTerm%20step3.jpg)  
 
-3. The Tera Term is now ready to be used.
+3. The Tera Term is now ready to be used.  
+
+<br/>  
 
 ### <a name="cubeMXSetup"></a> STM32 MCU Setup
 1. The clock speed of the MCU was configured in STM32CubeMX  as shown below.
