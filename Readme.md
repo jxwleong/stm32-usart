@@ -29,6 +29,7 @@ The transmit and receive of data between the UART and PC is host through USB-to-
 5. [References](#refer)          
 6. [Appendices](#appdix)   
    * [Tera Term Setup](#tTSetup)  
+   * [STM32 MCU Setup](#cubeMXSetup)
 
 <br/>
 
@@ -736,7 +737,7 @@ void configureTimer2Interrupt(){
 	TIM_COUNTER_ENABLE(timer2);
 }
 ```
-This code above shows algorithm to configure the timer2 when command `"blink"` was entered by user. Based on the [calculation](interruptTim2), the auto-reload register (arr) of timer2 was loaded with 375000 and the pre-scaler was set to 29. This configuration will cause timer2 interrupt every 125ms. For every 125ms, the MCU will service the interrupt service routine as shown below.  
+This code above shows algorithm to configure the timer2 when command `"blink"` was entered by user. Based on the [calculation](#interruptTim2), the auto-reload register (arr) of timer2 was loaded with 375000 and the pre-scaler was set to 29. This configuration will cause timer2 interrupt every 125ms. For every 125ms, the MCU will service the interrupt service routine as shown below.  
 &nbsp; 
 ```c
 static int i;
@@ -826,7 +827,9 @@ timer2 counter value = Blink period (desired) / timer2 period
 2. Goto terminal setup and configure the `New-line` to LF (Line Feed). 
 ![Step2](https://github.com/jason9829/stm32-usart/blob/master/resources/images/tera%20term/teraTerm%20step3.jpg)  
 
+3. The Tera Term is now ready to be used.
 
-
-
+### <a name="cubeMXSetup"></a> STM32 MCU Setup
+1. The clock speed of the MCU was configured in STM32CubeMX  as shown below.
+![STM32 peripheral clock](https://github.com/jason9829/stm32-usart/blob/master/resources/images/cubeMX/Practical2_peripheralClk.png)   
 
