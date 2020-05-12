@@ -54,7 +54,8 @@ The UART5 is configured based on the settings as follow:
 ```
 
 The connection between the USB to UART Dongle and the MCU are shown at figure below.
-![Connection between USB and UART5](https://github.com/jason9829/stm32-usart/blob/master/resources/images/sketch/connectionBetweenUSBandUART.png)  
+![Connection between USB and UART5](https://github.com/jason9829/stm32-usart/blob/master/resources/images/sketch/connectionBetweenUSBandUART.png)   
+Figure 1. The connection between USB to UART and STM32 MCU
 
 
 <br/>  
@@ -75,7 +76,7 @@ The explanation of asynchronous communication will be located at UART section.
 UART is a computing device used for asynchronous serial communication whereby the data frame and transmission speeds are configurable. An UART is usually an dividual or part of an integrated circuit (IC) which used for serial communications over a peripheral or computer. Multiple UARTs peripherals can be found in most microcontroller today. Another device named USART supports both synchronous and asunchronous operations [5].
 
 ![World length programming](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_dataframe_from_RM0090_page_969.png)  
-Figure x. Different data frame with different word length configuration  
+Figure 2. Different data frame with different word length configuration  
 
 ```
 Description of control register 1 to change the data size. (RM0090 page 1011)
@@ -125,7 +126,7 @@ Refer from [3] and [8].
 ### <a name="flowTRX"></a> Flow of Transmit and Receive Data  
 ![TxRx Flow](https://github.com/jason9829/stm32-usart/blob/master/resources/images/sketch/Practical2_txrx.png)  
 
-Figure x. The flow of transmit and receive data for USART/ UART in STM32F429ZI.
+Figure 3. The flow of transmit and receive data for USART/ UART in STM32F429ZI
 &nbsp;  
 
 The meaning of the acronym can be found in Table 147 in [1]. The flow of receive and transmit data the as follow.
@@ -141,15 +142,15 @@ To transmit the data, the data must be loaded into USART_DR register described a
 There are many peripherals in the microcontroller which require I/O but the number of I/O are limited. To solve this problem, alternate functions were used. Alternate functions means that the same I/O pin can be connect to different peripherals using multiplexer. By changing the selector pins on the multiplexer, the I/O pin can be shared with multiple peripherals. USART in this MCU are shared with GPIO. Thus, GPIO registers are needed to configured to allow USART to access to the I/O pin. The circuitry of the I/O pin is shown at figure below. 
 
 ![GPIO pin circuit](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/gpioPinCircuit.PNG)
-Figure x. The I/O pin circuitry from page 268 in [1].  
+Figure 4. The I/O pin circuitry from page 268 in [1]  
 
 &nbsp;
 ![Alternate fuunction mux](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/altFuncMux.PNG)  
-Figure x. The circuitry for different alternate function from page 273 in [1].  
+Figure 5. The circuitry for different alternate function from page 273 in [1]  
 
 &nbsp;  
 ![Alternate function mapping for UART5](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIO_ALT_FUNC.png)  
-Figure x. The alternate function pin for UART5 from page 78 in [2].
+Figure 6. The alternate function pin for UART5 from page 78 in [2]  
 &nbsp;  
 
 For this project, UART5 was used for transmit and receive the data. Based on the information shown at figure above, pin `PC12` is used for transmission of UART5 and pin `PD2` is used for receiving data.
@@ -164,7 +165,7 @@ Only used GPIO registers will be discussed.
     &nbsp;   
     This register is used to configure the I/O direction for each GPIO ports.  
     ![GPIOx_MODER](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_MODER.PNG)  
-    Figure x. The register map for GPIOx_MODER from page 281 at [1].  
+    Figure 7. The register map for GPIOx_MODER from page 281 at [1]   
     &nbsp;   
     ```
     Bits 2y:2y+1 MODERy[1:0]: Port x configuration bits (y = 0..15)
@@ -174,14 +175,14 @@ Only used GPIO registers will be discussed.
 	10: Alternate function mode
 	11: Analog mode
     ```  
-    > For the use of USART5, GPIO port C (PC12) and D (PD2) was used based on Figure x. In other words, GPIOC_MODER's bit 25:24          (MODER12) are set       to binary 10 and GPIOD_MODER's bit 5:4 (MODER2) is also set to binary 10 for the user of transmitting and receiving data using I/Os.
+    > For the use of USART5, GPIO port C (PC12) and D (PD2) was used based on Figure 6. In other words, GPIOC_MODER's bit 25:24          (MODER12) are set to binary 10 and GPIOD_MODER's bit 5:4 (MODER2) is also set to binary 10 for the user of transmitting and receiving data using I/Os.
        
     &nbsp;    
 2. **GPIO port output type register (GPIOx_OTYPER) (x = A..I/J/K)**  
     &nbsp;  
     This register is used to configure the output type of each GPIO ports.  
     ![GPIOx_OTYPER](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_OTYPER.PNG) 
-    Figure x. The register map for GPIOx_OTYPER from page 281 at [1].  
+    Figure 8. The register map for GPIOx_OTYPER from page 281 at [1]   
     &nbsp;   
     ```
     Bits 31:16 Reserved, must be kept at reset value.
@@ -197,7 +198,7 @@ Only used GPIO registers will be discussed.
     &nbsp;  
     This register is used to configure the I/O output speed for each GPIO ports.  
     ![GPIOx_OSPEEDR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_OSPEEDR.PNG)  
-    Figure x. The register map for GPIOx_OSPEEDR from page 282 at [1].  
+    Figure 9. The register map for GPIOx_OSPEEDR from page 282 at [1]  
     &nbsp;  
     ```
     Bits 2y:2y+1 OSPEEDRy[1:0]: Port x configuration bits (y = 0..15)
@@ -215,7 +216,7 @@ Only used GPIO registers will be discussed.
     &nbsp;  
     This register is used to configure I/O to be pull-up or pull-down.  
     ![GPIOx_PUPDR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_PUPDR.PNG)   
-    Figure x. The register map for GPIOx_PUPDR from page 282 at [1]. 
+    Figure 10. The register map for GPIOx_PUPDR from page 282 at [1]    
     &nbsp;  
     ```
     Bits 2y:2y+1 PUPDRy[1:0]: Port x configuration bits (y = 0..15)
@@ -231,7 +232,7 @@ Only used GPIO registers will be discussed.
     &nbsp;  
     This register is usedto configure the alternate function I/Os.
     ![GPIOx_AFRL](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_AFRL.PNG)   
-    Figure x. The register map for GPIOx_AFRL from page 285 at [1]. 
+    Figure 11. The register map for GPIOx_AFRL from page 285 at [1]   
     &nbsp;   
     ```
     Bits 31:0 AFRLy: Alternate function selection for port x bit y (y = 0..7)
@@ -254,7 +255,7 @@ Only used GPIO registers will be discussed.
     &nbsp;  
     This register is usedto configure the alternate function I/Os.
     ![GPIOx_AFRH](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/GPIOx_AFRH.PNG)   
-    Figure x. The register map for GPIOx_AFRH from page 286 at [1]. 
+    Figure 12. The register map for GPIOx_AFRH from page 286 at [1]  
     &nbsp;  
     ```
     Bits 31:0 AFRHy: Alternate function selection for port x bit y (y = 8..15)
@@ -282,7 +283,7 @@ Only used GPIO registers will be discussed.
     &nbsp;  
     The register will used to show the status of the USART (flag or error).   
     ![USART_SR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_SR.PNG)  
-    Figure x. The register map for USART_SR from page 1007 at [1].  
+    Figure 13. The register map for USART_SR from page 1007 at [1]    
     &nbsp;  
     ```
     Bits 31:10 Reserved, must be kept at reset value
@@ -372,14 +373,15 @@ Only used GPIO registers will be discussed.
 		0: No parity error
 		1: Parity error
     
-    ```
+    ```  
+    > This register shows the status of the USART. The status can be read by using and operation. For example of checking parity error, 1 is and with `Bit 0`. If the result is 1 then there are parity error. Otherwise, there are no parity error.  
     
     &nbsp;  
 2. **Baud rate register (USART_BRR)**  
     &nbsp;  
     This register is used to configure the baud rate of USART.  
     ![USART_BRR](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_BRR.PNG)  
-    Figure x. The register map for USART_BRR from page 1010 at [1]. 
+    Figure 14. The register map for USART_BRR from page 1010 at [1]  
     &nbsp;  
     ```
     Bits 31:16 Reserved, must be kept at reset value
@@ -388,15 +390,15 @@ Only used GPIO registers will be discussed.
 	Bits 3:0 DIV_Fraction[3:0]: fraction of USARTDIV
 		These 4 bits define the fraction of the USART Divider (USARTDIV). When OVER8=1, the
 		DIV_Fraction3 bit is not considered and must be kept cleared.
-    ```
-    
+    ```  
+    > Different bits in this register will be loaded with respective value after calculation. The calculation can be found [here](#baud).
     
     &nbsp; 
 3. **Control register 1 (USART_CR1)**  
     &nbsp;  
     This register is used to configure the USART.  
     ![USART_CR1](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR1.PNG)  
-    Figure x. The register map for USART_BRR from page 1010 at [1]. 
+    Figure 15. The register map for USART_BRR from page 1010 at [1]  
     &nbsp;  
     ```
     Bits 31:16 Reserved, must be kept at reset value
@@ -479,14 +481,15 @@ Only used GPIO registers will be discussed.
 		be set by software, and will be reset by hardware during the stop bit of break.
 		0: No break character is transmitted
 		1: Break character will be transmitted	
-    ```
+    ```  
+    > Different configuration can be set using this register with combination with two other control registers.
     
     &nbsp;   
 4. **Control register 2 (USART_CR2)**  
     &nbsp;  
     This register is used to configure the USART.  
     ![USART_CR2](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR2.PNG)  
-    Figure x. The register map for USART_BRR from page 1013 at [1]. 
+    Figure 16. The register map for USART_BRR from page 1013 at [1]   
     &nbsp;  
     ```
     Bits 31:15 Reserved, must be kept at reset value
@@ -545,14 +548,15 @@ Only used GPIO registers will be discussed.
 		detection.
 	Note: These 3 bits (CPOL, CPHA, LBCL) should not be written while the transmitter is enabled.	
     
-    ```
+    ```  
+    > Different configuration can be set using this register with combination with two other control registers.    
     
     &nbsp;     
 5. **Control register 3 (USART_CR3)**  
     &nbsp;  
     This register is used to configure the USART.  
     ![USART_CR3](https://github.com/jason9829/stm32-usart/blob/master/resources/images/reference%20manual/USART_CR3.PNG)  
-    Figure x. The register map for USART_BRR from page 1014 at [1]. 
+    Figure 17. The register map for USART_BRR from page 1014 at [1]  
     &nbsp; 
     ```
     Bits 31:12 Reserved, must be kept at reset value
@@ -616,8 +620,8 @@ Only used GPIO registers will be discussed.
 		1: An interrupt is generated whenever DMAR=1 in the USART_CR3 register and FE=1 or
 		ORE=1 or NF=1 in the USART_SR register.
 	
-    ```
-    
+    ```  
+    > Different configuration can be set using this register with combination with two other control registers.     
     &nbsp; 
 
 <br/>  
@@ -628,7 +632,7 @@ Only used GPIO registers will be discussed.
 
 #### <a name="ex1"></a> 1-Byte transmission through UART5.  
 ![Result of oscilloscope no parity](https://github.com/jason9829/stm32-usart/blob/master/resources/images/waveform/0_parity.JPG)  
-Figure x. Result of sending decimal `86` via UART5 without parity.    
+Figure 18. Result of sending decimal `86` via UART5 without parity   
 
 &nbsp;    
 
@@ -637,13 +641,13 @@ Figure x. Result of sending decimal `86` via UART5 without parity.
 <br/>  
 
 ![Result of oscilloscope parity](https://github.com/jason9829/stm32-usart/blob/master/resources/images/waveform/oneParity.png)  
-Figure x. Result of sending decimal `96` via UART5 with parity.    
+Figure 19. Result of sending decimal `96` via UART5 with parity      
 
 <br/>
 
 #### <a name="ex2"></a> Transmission of "Hello World!" through UART5.  
 ![Result of sending Hello World!](https://github.com/jason9829/stm32-usart/blob/master/resources/images/tera%20term/helloWORLD.JPG)   
-Figure x. Result of transmitting "Hello World!" using UART5.
+Figure 20. Result of transmitting "Hello World!" using UART5  
 
 <br/>
 
